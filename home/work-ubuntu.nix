@@ -26,6 +26,11 @@
     (modulesPath + /packages/tui-tools.nix)
     (modulesPath + /packages/utilities.nix)
     (modulesPath + /packages/fonts.nix)
+    
+    # Development tools
+    (modulesPath + /packages/dev-tools/vscode.nix)
+    (modulesPath + /packages/dev-tools/docker.nix)
+    (modulesPath + /packages/dev-tools/python.nix)
   ];
 
   home.username = "perrusi";
