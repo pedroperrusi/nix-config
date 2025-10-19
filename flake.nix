@@ -18,6 +18,9 @@
     homeConfigurations."pedro@work-ubuntu" =
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
+        extraSpecialArgs = {
+          modulesPath = ./modules;
+        };
         modules = [
           ./home/work-ubuntu.nix
         ];
