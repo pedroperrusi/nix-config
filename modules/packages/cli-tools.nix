@@ -8,5 +8,7 @@
     eza
     fd
     fastfetch
+    gh
+    gh-copilot
   ];
 }
