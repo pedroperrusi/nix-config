@@ -11,7 +11,13 @@
     (modulesPath + /programs/git.nix)
     (modulesPath + /programs/neovim.nix)
     (modulesPath + /programs/tmux.nix)
-    (modulesPath + /programs/alacritty.nix)
+    (modulesPath + /programs/ghostty.nix)
+    
+    # Desktop integration
+    (modulesPath + /desktop/default-terminal.nix)
+    
+    # Scripts  
+    (modulesPath + /scripts/gpu-setup.nix)
     
     # Packages
     (modulesPath + /packages/cli-tools.nix)
