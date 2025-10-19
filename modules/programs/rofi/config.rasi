@@ -1,0 +1,24 @@
+configuration {
+  modi: "drun,run,window";
+  show-icons: true;
+  display-drun: "Apps";
+  display-run: "Run";
+  display-window: "Windows";
+  drun-display-format: "{name}";
+  window-format: "{w} · {c} · {t}";
+  
+  location: 0;
+  
+  disable-history: false;
+  hide-scrollbar: false;
+  sidebar-mode: true;
+  
+  matching: "fuzzy";
+  sort: true;
+  sorting-method: "fzf";
+  case-sensitive: false;
+  
+  terminal: "ghostty-gl";
+}
+
+@theme "~/.config/rofi/theme.rasi"

@@ -12,6 +12,7 @@
     (modulesPath + /programs/neovim.nix)
     (modulesPath + /programs/tmux.nix)
     (modulesPath + /programs/ghostty.nix)
+    (modulesPath + /programs/rofi.nix)
     
     # Desktop integration
     (modulesPath + /desktop/default-terminal.nix)
