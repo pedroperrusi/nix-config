@@ -7,5 +7,6 @@
     ripgrep
     eza
     fd
+    fastfetch
   ];
 }

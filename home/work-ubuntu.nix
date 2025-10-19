@@ -13,6 +13,7 @@
     (modulesPath + /programs/tmux.nix)
     (modulesPath + /programs/ghostty.nix)
     (modulesPath + /programs/rofi.nix)
+    (modulesPath + /programs/btop.nix)
     
     # Desktop integration
     (modulesPath + /desktop/default-terminal.nix)
