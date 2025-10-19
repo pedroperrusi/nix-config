@@ -2,95 +2,103 @@
 
 A clean, modular Home Manager configuration for managing your development environment with Nix.
 
-## 📁 Structure
+## 🧱 Philosophy
 
-```
-nix-config/
-├── flake.nix                    # Main flake configuration
-├── home/
-│   └── work-ubuntu.nix          # Machine-specific config (imports modules)
-└── modules/
-    ├── shell/                   # Shell environment
-    │   ├── zsh.nix
-    │   ├── starship.nix
-    │   └── direnv.nix
-    ├── programs/                # Configured applications
-    │   ├── git.nix
-    │   └── neovim.nix
-    └── packages/                # Package lists
-        ├── cli-tools.nix
-        ├── tui-tools.nix
-        └── utilities.nix
+Focus on small, composable modules instead of a giant monolith. Each concern (shell, programs, packages, scripts) lives in its own file and is imported by a single machine profile under `home/`. This keeps diffs tiny and onboarding fast.
+
+## 🗺 Architecture Overview
+
+```text
+flake.nix                # Entrypoint: pins channels & exposes homeConfigurations
+home/work-ubuntu.nix     # Machine profile: imports module tree
+modules/
+    shell/                 # Shell related config (zsh, starship, direnv)
+    programs/              # Managed apps with declarative settings
+    packages/              # Grouped package sets (cli, tui, dev-tools, fonts, utilities)
+    desktop/               # Desktop integration & XDG entries
+    scripts/               # Small helper or setup scripts packaged via HM
 ```
 
-## 🚀 Quick Start
+## 🔐 Reproducibility
 
-### Apply Configuration
+- Channels pinned via `flake.nix` (`nixos-24.05`, `nixos-unstable` for select packages).
+- Avoids ad‑hoc installs; everything flows through Home Manager.
+- To refresh inputs:
 
 ```bash
+nix flake update
+home-manager switch --flake .#pedro@work-ubuntu
+```
+
+- For experimental or binary-only tools (e.g. OpenCode) hash pinning is used; migrate to tagged release when available.
+
+## 🧠 AI & Coding Assistance
+
+### OpenCode (Terminal AI Agent)
+
+Integrated via `modules/packages/dev-tools/opencode.nix`, currently fetching the latest archived binary:
+
+```nix
+version = "latest";
+sha256  = "09c0r7aa9vwgfpmpq43v19nqrkp96k9ic8iyiz2aw83r7qh427vz";
+```text
+
+Next improvement: replace `latest` with final release tag once confirmed upstream. Wrapper & XDG cache support can be added if runtime writes become problematic under Nix.
+
+### GitHub Copilot CLI / gh-copilot
+
+Included under `cli-tools.nix` for quick inline AI assistance.
+
+## 🛠 Development Tooling Modules
+
+| Module | Purpose |
+|--------|---------|
+| `dev-tools/vscode.nix` | GUI editor from unstable channel |
+| `dev-tools/opencode.nix` | Terminal AI coding agent binary derivation |
+| `dev-tools/docker.nix` | Docker + compose + debugging utilities |
+| `dev-tools/python.nix` | Python ecosystem (uv, pyenv, ruff, mypy, black) |
+
+## 🧪 Common Workflows
+
+```bash
+# Switch to current configuration
 home-manager switch --flake ~/nix-config#pedro@work-ubuntu
 
-# Or use the built-in alias after first run:
-hm
-```
+# Preview activation without applying
+nix build .#homeConfigurations.pedro@work-ubuntu.activationPackage
 
-### Update All Packages
+# Inspect generated result symlink
+ls -l result
 
-```bash
-cd ~/nix-config
+# Update inputs
 nix flake update
-hm
+
+# Query package closure size (example)
+nix path-info -Sh $(which opencode)
+
+# Run OpenCode
+opencode help
 ```
 
-## 📚 Documentation
+## 🧩 Adding a New Module
 
-- **[MODULES_README.md](MODULES_README.md)** - Comprehensive guide with examples
-- **[ARCHITECTURE.md](ARCHITECTURE.md)** - Visual structure and design patterns
-- **[QUICK_REFERENCE.md](QUICK_REFERENCE.md)** - Cheat sheet for common tasks
+1. Create file under `modules/...`
+2. Export either `home.packages`, `programs.<tool>`, or `xdg.configFile` entries.
+3. Import it in `home/work-ubuntu.nix`.
+4. Switch: `home-manager switch --flake .#pedro@work-ubuntu`.
 
-## ✨ Features
+## 🐛 Troubleshooting
 
-- **Modular**: Each tool/program in its own file
-- **Reusable**: Share modules across multiple machines
-- **Maintainable**: Small, focused configurations
-- **Version-controlled**: Everything in git, reproducible builds
+| Symptom | Fix |
+|---------|-----|
+| "Path not tracked by Git" during switch | `git add <file>` so flake can evaluate it |
+| Hash mismatch on binary fetch | Re-run `nix-prefetch-url <asset-url>` and update sha256 |
+| Runtime tool writes denied | Add wrapper with XDG vars or use `home.file` for config |
+| Ghostty fails to start with GL | Install `nixGL` or adjust `LD_LIBRARY_PATH` in wrapper |
 
-## 🔧 Common Tasks
+## 🗃 Future Improvements
 
-| Task | File to Edit |
-|------|--------------|
-| Add package | `modules/packages/{cli-tools,tui-tools,utilities}.nix` |
-| Add shell alias | `modules/shell/zsh.nix` |
-| Configure git | `modules/programs/git.nix` |
-| Configure neovim | `modules/programs/neovim.nix` |
-
-## 📦 What's Included
-
-### Shell Environment
-- **ZSH** with completions, autosuggestions, syntax highlighting
-- **Starship** prompt
-- **Direnv** for project-specific environments
-
-### Development Tools
-- **Git** with delta diff viewer
-- **Neovim** with telescope, treesitter, lualine, and more
-- **LazyGit** for terminal git UI
-
-### CLI Utilities
-- Modern replacements: `eza` (ls), `bat` (cat), `ripgrep` (grep), `fd` (find)
-- Navigation: `fzf`, `zoxide`
-- Monitoring: `htop`, `btop`
-- Utilities: `jq`, `tree`, `tealdeer`
-
-## 🎯 Next Steps
-
-1. Read [MODULES_README.md](MODULES_README.md) for detailed usage
-2. Customize modules to your preferences
-3. Add new modules for additional tools
-4. Create configurations for other machines
-
----
-
-**Old Configuration**: Saved as `home/work-ubuntu.nix.backup` (can be deleted after verifying the new setup works)
-
-Nix-based Home Manager configuration for managing packages and dotfiles.
+- Pin OpenCode to final release tag & optionally build from source for static binary.
+- Add `modules/README.md` generated from file headers.
+- Introduce CI (flake check, formatting, dead hash scanning).
+- Mac profile once hardware arrives (`pedro@mac`).
