@@ -1,0 +1,12 @@
+# Build outputs
+result
+result-*
+
+# Vim/Editor swap files
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
