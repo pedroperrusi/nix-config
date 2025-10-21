@@ -6,9 +6,9 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    
+
     defaultKeymap = "emacs";
-    
+
     loginExtra = ''
       [ -f ~/.nix-profile/etc/profile.d/hm-session-vars.sh ] && source ~/.nix-profile/etc/profile.d/hm-session-vars.sh
     '';
@@ -29,11 +29,16 @@
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh)"
       source ${pkgs.fzf}/share/fzf/key-bindings.zsh
       source ${pkgs.fzf}/share/fzf/completion.zsh
+
+      # mise activation - tool version manager
+      if command -v mise &> /dev/null; then
+        eval "$(mise activate zsh)"
+      fi
     '';
   };
 
   programs.fzf.enable = true;
-  
+
   programs.eza = {
     enable = true;
     enableZshIntegration = false;

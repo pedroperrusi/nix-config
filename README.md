@@ -57,6 +57,9 @@ Included under `cli-tools.nix` for quick inline AI assistance.
 | `dev-tools/opencode.nix` | Terminal AI coding agent binary derivation |
 | `dev-tools/docker.nix` | Docker + compose + debugging utilities |
 | `dev-tools/python.nix` | Python ecosystem (uv, pyenv, ruff, mypy, black) |
+| `dev-tools/mise.nix` | Polyglot tool version manager and task runner |
+
+See [docs/MISE.md](docs/MISE.md) for mise usage and configuration.
 
 ## 🧪 Common Workflows
 

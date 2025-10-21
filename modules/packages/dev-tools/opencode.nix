@@ -1,36 +1,38 @@
-{ pkgs, lib, ... }:
+{ pkgs, config, ... }:
 
 let
-  # NOTE: Pin a specific release instead of "latest" for reproducibility.
-  # Find tags at: https://github.com/opencode-ai/opencode/releases
-  version = "latest"; # ARCHIVED upstream: consider pinning the last available tag when confirmed
-  src = pkgs.fetchurl {
-  url = "https://github.com/opencode-ai/opencode/releases/latest/download/opencode-linux-x86_64.tar.gz";
-  # sha256 fetched via nix-prefetch-url on 2025-10-19
-  sha256 = "09c0r7aa9vwgfpmpq43v19nqrkp96k9ic8iyiz2aw83r7qh427vz";
-  };
-  opencode = pkgs.stdenv.mkDerivation {
-    pname = "opencode";
-    inherit version src;
-    unpackPhase = "tar -xzf $src";
-    installPhase = ''
-      mkdir -p $out/bin
-      cp opencode $out/bin/
-      chmod +x $out/bin/opencode
-    '';
-    meta = with lib; {
-      description = "OpenCode - AI coding agent for the terminal";
-      homepage = "https://opencode.ai";
-      # Validate license in upstream repo; adjust if different.
-      license = licenses.asl20;
-      maintainers = [];
-      platforms = [ "x86_64-linux" ];
-      mainProgram = "opencode";
+  opencode-installer = pkgs.writeShellScriptBin "opencode" ''
+    set -euo pipefail
+
+    INSTALL_DIR="$HOME/.opencode/bin"
+    OPENCODE_BIN="$INSTALL_DIR/opencode"
+
+    if [ ! -f "$OPENCODE_BIN" ]; then
+      echo "OpenCode not found. Installing..."
+      export VERSION=""
+      ${pkgs.curl}/bin/curl -fsSL https://raw.githubusercontent.com/sst/opencode/refs/heads/dev/install | ${pkgs.bash}/bin/bash
+      echo "Installation complete!"
+    fi
+
+    exec "$OPENCODE_BIN" "$@"
+  '';
+
+  githubCopilotHost = "bbraun.ghe.com";
+in
+{
+  config = {
+    home.packages = [ opencode-installer ];
+
+    home.sessionPath = [ "$HOME/.opencode/bin" ];
+
+    home.file.".local/share/opencode/auth.json".text = builtins.toJSON {
+      providers = [
+        {
+          type = "copilot";
+          host = githubCopilotHost;
+        }
+      ];
     };
   };
-in {
-  # Expose as an attribute for inclusion into home.packages from other modules.
-  config = {
-    home.packages = [ opencode ];
-  };
 }
+

@@ -1,0 +1,28 @@
+# mise configuration file
+# Place this in your project root or at ~/.config/mise/config.toml
+
+# Example: Set default tool versions globally
+# [tools]
+# node = "20"
+# python = "3.11"
+# go = "1.21"
+
+# Example: Set environment variables
+# [env]
+# NODE_ENV = "development"
+# API_KEY = { file = "~/.secrets/api_key" }
+
+# Example: Define tasks
+# [tasks.build]
+# run = "npm run build"
+# description = "Build the project"
+
+# [tasks.test]
+# run = "pytest"
+# description = "Run tests"
+
+# [tasks.dev]
+# run = "npm run dev"
+# description = "Start development server"
+
+# For more information, see: https://mise.jdx.dev/configuration.html

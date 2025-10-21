@@ -31,7 +31,8 @@
     (modulesPath + /packages/dev-tools/vscode.nix)
     (modulesPath + /packages/dev-tools/docker.nix)
     (modulesPath + /packages/dev-tools/python.nix)
-  (modulesPath + /packages/dev-tools/opencode.nix)
+    (modulesPath + /packages/dev-tools/opencode.nix)
+    (modulesPath + /packages/dev-tools/mise.nix)
   ];
 
   home.username = "perrusi";
