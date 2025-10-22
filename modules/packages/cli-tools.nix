@@ -2,13 +2,20 @@
 
 {
   home.packages = with pkgs; [
-    fzf
-    zoxide
-    ripgrep
+    bat
+    btop
+    curl
     eza
     fd
-    fastfetch
-    gh
-    gh-copilot
+    fzf
+    git
+    lazygit
+    mise
+    ripgrep
+    tree
+    unzip
+    wget
+    zip
+    zoxide
   ];
 }
