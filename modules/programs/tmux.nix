@@ -13,8 +13,6 @@
 
     prefix = "C-a";
 
-    extraConfig = builtins.readFile ./tmux/tmux.conf;
-
     plugins = with pkgs.tmuxPlugins; [
       sensible
       yank
@@ -27,4 +25,10 @@
       }
     ];
   };
+
+  # Symlink tmux config from dotfiles
+  # Changes to ~/dotfiles/tmux/tmux.conf will require tmux reload (Ctrl+a R)
+  # but NO Home Manager rebuild
+  xdg.configFile."tmux/tmux.conf".source =
+    config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/dotfiles/tmux/tmux.conf";
 }
