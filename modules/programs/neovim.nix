@@ -12,6 +12,10 @@
       # LSP and formatting for Lua/Neovim config
       lua-language-server
       stylua
+
+      # Required for LazyVim plugins
+      lua5_1
+      ast-grep
     ];
   };
 
