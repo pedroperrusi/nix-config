@@ -4,8 +4,7 @@
   home.packages = with pkgs-unstable; [
     nodejs_22
 
-    # Package managers
-    nodePackages.npm
+    # Additional package managers (npm comes with nodejs_22)
     nodePackages.pnpm
     nodePackages.yarn
 
