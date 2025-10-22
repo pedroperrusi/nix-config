@@ -7,6 +7,12 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+
+    extraPackages = with pkgs-unstable; [
+      # LSP and formatting for Lua/Neovim config
+      lua-language-server
+      stylua
+    ];
   };
 
   # Symlink to external Neovim config in ~/dotfiles

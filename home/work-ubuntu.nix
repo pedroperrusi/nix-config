@@ -31,6 +31,8 @@
     (modulesPath + /packages/dev-tools/vscode.nix)
     (modulesPath + /packages/dev-tools/docker.nix)
     (modulesPath + /packages/dev-tools/python.nix)
+    (modulesPath + /packages/dev-tools/nodejs.nix)
+    (modulesPath + /packages/dev-tools/c-cpp.nix)
   (modulesPath + /packages/dev-tools/opencode.nix)
   ];
 
