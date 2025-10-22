@@ -2,15 +2,20 @@
 
 {
   home.packages = with pkgs-unstable; [
-    # Compilers
-    gcc
+    # Primary compiler toolchain
     clang
+
+    # GCC tools (without wrapper to avoid conflicts)
+    gcc-unwrapped
+
+    # LLVM debugger
+    lldb
 
     # Build tools
     cmake
     gnumake
 
-    # Debugger
+    # Traditional debugger
     gdb
 
     # Tools
