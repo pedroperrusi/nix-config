@@ -1,13 +1,32 @@
 { pkgs, lib, ... }:
 
+let
+  vaultPath = "$HOME/Documents/Obsidian/Pedroverso";
+  obsidianWithVault = pkgs.writeShellScriptBin "obsidian-pedroverso" ''
+    ${pkgs.obsidian}/bin/obsidian "obsidian://open?path=${vaultPath}"
+  '';
+in
 {
   home.packages = with pkgs; [
     obsidian
+    obsidianWithVault
   ];
+
+  # Desktop entry for Obsidian with vault auto-open
+  xdg.desktopEntries.obsidian-pedroverso = {
+    name = "Obsidian (Pedroverso)";
+    genericName = "Note Taking App";
+    comment = "Open Obsidian with Pedroverso vault";
+    exec = "${obsidianWithVault}/bin/obsidian-pedroverso";
+    icon = "obsidian";
+    terminal = false;
+    categories = [ "Office" "TextEditor" ];
+    type = "Application";
+  };
 
   # Obsidian configuration directory is typically ~/.config/obsidian
   # Vault locations are user-defined and can be anywhere
-  # To automatically clone/sync vaults, you could use home.activation scripts
+   # To automatically clone/sync vaults, you could use home.activation scripts
   # or rely on Obsidian's built-in sync or git-based solutions
 
   home.activation.cloneObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
