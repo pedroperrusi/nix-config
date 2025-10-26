@@ -14,6 +14,7 @@
     (modulesPath + /programs/ghostty.nix)
     (modulesPath + /programs/rofi.nix)
     (modulesPath + /programs/btop.nix)
+    (modulesPath + /programs/obsidian.nix)
 
     # Desktop integration
     (modulesPath + /desktop/default-terminal.nix)
